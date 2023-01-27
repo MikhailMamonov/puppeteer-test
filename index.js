@@ -13,8 +13,12 @@ const productSelectors = [
 ];
 
 const [productLink, region] = process.argv.slice(2);
-
-(async () => {
+if (!productLink || !region) {
+  console.log("required arguments are not entered");
+} else {
+  run();
+}
+async function run() {
   let launchOptions = { headless: false, args: ["--start-maximized"] };
 
   const browser = await puppeteer.launch({
@@ -49,7 +53,7 @@ const [productLink, region] = process.argv.slice(2);
   fs.writeFileSync("product.txt", data.filter((val) => val).join(", "));
 
   await browser.close();
-})();
+}
 
 function delay(timeout) {
   return new Promise((resolve) => {
