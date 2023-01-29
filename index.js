@@ -7,7 +7,7 @@ const SELECT_REGION_ELEMENT = ".FirstHeader_region__lHCGj";
 
 const productSelectors = {
   rating: ".Summary_title__Uie8u",
-  reviewCount: "#text",
+  reviewCount: ".Badge_badge__iw6ES",
   price: ".Price_priceDesktop__P9b2W ",
   priceOld: ".Price_role_old__qW2bx",
 };
