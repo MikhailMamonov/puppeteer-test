@@ -5,12 +5,12 @@ const fs = require("fs");
 
 const SELECT_REGION_ELEMENT = ".FirstHeader_region__lHCGj";
 
-const productSelectors = [
-  ".Summary_title__Uie8u",
-  ".Badge_badge__iw6ES",
-  ".Price_priceDesktop__P9b2W ",
-  ".Price_role_old__qW2bx",
-];
+const productSelectors = {
+  rating: ".Summary_title__Uie8u",
+  reviewCount: "#text",
+  price: ".Price_priceDesktop__P9b2W ",
+  priceOld: ".Price_role_old__qW2bx",
+};
 
 const [productLink, region] = process.argv.slice(2);
 if (!productLink || !region) {
@@ -44,13 +44,23 @@ async function run() {
   await delay(3000);
   await page.screenshot({ path: "screenshot.jpg", fullPage: true });
 
+  let value = null;
   const data = await Promise.all(
-    productSelectors.map(async (selector) => {
-      return await page.$eval(selector, (el) => el.textContent).catch(() => {});
+    Object.keys(productSelectors).map(async (key) => {
+      value = await page
+        .$eval(productSelectors[key], (el) => el.textContent)
+        .catch(() => {});
+      return { key, value };
     })
   );
 
-  fs.writeFileSync("product.txt", data.filter((val) => val).join(", "));
+  fs.writeFileSync(
+    "product.txt",
+    data
+      .filter((val) => val)
+      .map((val) => `${val.key} = ${parseFloat(val.value)}`)
+      .join("\n")
+  );
 
   await browser.close();
 }

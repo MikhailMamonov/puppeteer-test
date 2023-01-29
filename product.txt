@@ -1,1 +1,4 @@
-4.5, 39, 823 ₽/шт
+rating = 4.8
+reviewCount = NaN
+price = 89
+priceOld = 134
