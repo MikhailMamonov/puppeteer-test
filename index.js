@@ -47,9 +47,14 @@ async function run() {
   let value = null;
   const data = await Promise.all(
     Object.keys(productSelectors).map(async (key) => {
-      value = await page
-        .$eval(productSelectors[key], (el) => el.textContent)
-        .catch(() => {});
+      if (key === "reviewCount") {
+        const xpath = await page.$x("(//div[@class='Summary_title__Uie8u'])");
+        value = await page.evaluate((h1) => h1.textContent, xpath[1]);
+        console.log(value);
+      } else
+        value = await page
+          .$eval(productSelectors[key], (el) => el.textContent)
+          .catch(() => {});
       return { key, value };
     })
   );

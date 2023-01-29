@@ -1,4 +1,4 @@
 rating = 4.8
-reviewCount = NaN
+reviewCount = 786
 price = 89
 priceOld = 134
